@@ -44,3 +44,11 @@ input {
   border-radius: 10px;
   cursor: pointer;
 }
+
+datalist {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  writing-mode: vertical-lr;
+  width: 200px;
+}
