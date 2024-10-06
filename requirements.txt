@@ -1,0 +1,11 @@
+bcrypt
+cffi
+click
+dnspython
+Flask
+itsdangerous
+Jinja2
+MarkupSafe
+pycparser
+pymongo
+Werkzeug

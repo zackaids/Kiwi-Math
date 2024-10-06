@@ -4,23 +4,46 @@ export function Register(props) {
     const [email, setEmail] = useState("");
     const [pass, setPass] = useState("");
     const [name, setName] = useState("");
-    const [birthday, setBirthday] = useState("")
-    const [grade, setGrade] = useState("")
+    const [birthday, setBirthday] = useState("");
+    const [grade, setGrade] = useState("");
 
-    // const handleSubmit = (e) => {
-    //     e.preventDefault();
-    //     // sent to the backend?
-    // }
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        const userData = {
+            name,
+            birthday,
+            grade,
+            email,
+            pass
+        };
+
+        fetch('http://localhost:5000/register', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(userData)
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+            alert(data.message);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred while registering. Please try again.');
+        });
+    };
 
     return (
-        <div class="auth-form-container">
-            <form className="login-form" method="post">
+        <div className="auth-form-container">
+            <form className="login-form" onSubmit={handleSubmit}>
                 <label>Full Name</label>
                 <input value={name} onChange={(e) => setName(e.target.value)} name="name" id="name" placeholder="Full Name"/>
                 <label htmlFor="birthday">Date of Birth</label>
                 <input value={birthday} onChange={(e) => setBirthday(e.target.value)} type="date" id="birthday" name="birthday"></input>
                 <label htmlFor="grade">Grade</label>
-                <input value={grade} type="range" min="9" max="12" onChange={(e) => setGrade(e.target.value)} list ="markers"></input>
+                <input value={grade} type="range" min="9" max="12" onChange={(e) => setGrade(e.target.value)} list="markers"></input>
                 <label htmlFor="email">E-mail</label>
                 <input value={email} onChange={(e) => setEmail(e.target.value)} type="email" placeholder="youremail@gmail.com" name="email"/>
                 <label htmlFor="password">Password</label>
