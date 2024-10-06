@@ -39,3 +39,20 @@
 .learn-button:hover, .test-button:hover, .profile-button:hover, .options-button:hover {
     background-color: #5A453E;
 }
+
+.logo {
+    width: 100px; /* Adjust the size as needed */
+    height: auto;
+  }
+  
+  .kiwimath-title {
+    font-family: 'Pacifico', cursive, sans-serif; /* Example of a fun font */
+    color: #6C534E;
+    margin-top: -30px;
+  }
+
+  @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;700&display=swap');
+
+  body {
+    font-family: 'Josefin Sans', sans-serif;
+  }
