@@ -7,6 +7,7 @@ import { Login } from "./Login";
 import { Register } from "./Register";
 import { Home } from "./Home"; // Assuming you have a Home component
 import { QuestionPage } from "./QuestionPage"; // Import the QuestionPage component
+import { ResultsPage } from "./ResultsPage";
 
 function App() {
   const [isDark, setIsDark] = useLocalStorage("isDark", false);
@@ -27,6 +28,7 @@ function App() {
           <Route path="/register" element={<Register onFormSwitch={toggleForm} />} />
           <Route path="/home" element={<Home />} />
           <Route path="/questions" element={<QuestionPage />} /> {/* Add the route for QuestionPage */}
+          <Route path="/result" element={<ResultsPage />} />
           <Route path="*" element={<Navigate to="/login" />} />
         </Routes>
       </div>

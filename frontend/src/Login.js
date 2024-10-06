@@ -8,7 +8,6 @@ export function Login(props) {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log("Sending data:", { email, pass });  // Debug statement
         const response = await fetch("http://localhost:5000/login", {
             method: "POST",
             headers: {
@@ -18,9 +17,9 @@ export function Login(props) {
         });
 
         const data = await response.json();
-        console.log("Received response:", data);  // Debug statement
         if (response.status === 200) {
-            // Redirect to the home page
+            // Store the user's grade and redirect to the home page
+            localStorage.setItem("userGrade", data.grade);
             navigate("/home");
         } else {
             alert(data.message);
@@ -40,31 +39,3 @@ export function Login(props) {
         </div>
     );
 }
-
-
-
-
-
-// import React, { useState } from "react";
-
-// export function Login(props) {
-//     const [email, setEmail] = useState("");
-//     const [pass, setPass] = useState("");
-
-//     const handleSubmit = (e) => {
-//         e.preventDefault();
-//     }
-
-//     return (
-//         <div class="auth-form-container">
-//             <form className="login-form" onSubmit={handleSubmit}>
-//                 <label htmlFor="email">E-mail</label>
-//                 <input value={email} onChange={(e) => setEmail(e.target.value)} type="email" placeholder="youremail@gmail.com" name="email"/>
-//                 <label htmlFor="password">Password</label>
-//                 <input value={pass} onChange={(e) => setPass(e.target.value)} type="password" placeholder="password" id="password" name="password" />
-//                 <button class="login-button">Log In</button>
-//             </form>
-//             <span className="register-link" href="#" onClick={() => props.onFormSwitch("register")}>Don't have an account? Register here.</span>
-//         </div>
-//     )
-// }
