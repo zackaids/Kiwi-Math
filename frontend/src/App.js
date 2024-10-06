@@ -1,35 +1,29 @@
-import useLocalStorage from "use-local-storage";
-import React, { useState } from "react";
+import React from "react";
 import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
 import './App.css';
-import { Toggle } from "./components/Toggle";
-import { Login } from "./Login";
-import { Register } from "./Register";
-import { Home } from "./Home"; // Assuming you have a Home component
-import { QuestionPage } from "./QuestionPage"; // Import the QuestionPage component
-import { ResultsPage } from "./ResultsPage";
+
+import { Auth } from "./Auth"; // Import the Auth component
+import { Home } from "./Home";
+import { QuestionPage } from "./QuestionPage";
+import { ResultsPage } from "./ResultsPage"; // Import the ResultsPage component
+import { LearnPage } from "./LearnPage"; // Import the LearnPage component
+import { ProfilePage } from "./ProfilePage"; // Import the ProfilePage component
+import { OptionsPage } from "./OptionsPage"; // Import the OptionsPage component
+import { Navbar } from "./Navbar"; // Import the Navbar component
 
 function App() {
-  const [isDark, setIsDark] = useLocalStorage("isDark", false);
-  const [currentForm, setCurrentForm] = useState("login");
-  const toggleForm = (formName) => {
-    setCurrentForm(formName);
-  }
-
   return (
     <Router>
-      <div className="App" data-theme={isDark ? "dark" : "light"}>
-        <Toggle
-          isChecked={isDark}
-          handleChange={() => setIsDark(!isDark)}
-        />
+      <div className="App">
         <Routes>
-          <Route path="/login" element={<Login onFormSwitch={toggleForm} />} />
-          <Route path="/register" element={<Register onFormSwitch={toggleForm} />} />
-          <Route path="/home" element={<Home />} />
-          <Route path="/questions" element={<QuestionPage />} /> {/* Add the route for QuestionPage */}
-          <Route path="/result" element={<ResultsPage />} />
-          <Route path="*" element={<Navigate to="/login" />} />
+          <Route path="/" element={<Auth />} /> {/* Use Auth component for the root path */}
+          <Route path="/home" element={<><Navbar /><Home /></>} />
+          <Route path="/questions" element={<><Navbar /><QuestionPage /></>} />
+          <Route path="/results" element={<><Navbar /><ResultsPage /></>} /> {/* Add ResultsPage route */}
+          <Route path="/learn" element={<><Navbar /><LearnPage /></>} /> {/* Add LearnPage route */}
+          <Route path="/options" element={<><Navbar /><OptionsPage /></>} /> {/* Add OptionsPage route */}
+          <Route path="/profile" element={<><Navbar /><ProfilePage /></>} /> {/* Add ProfilePage route */}
+          <Route path="*" element={<Navigate to="/" />} /> {/* Redirect to root path if no match */}
         </Routes>
       </div>
     </Router>
@@ -37,34 +31,3 @@ function App() {
 }
 
 export default App;
-
-
-// import useLocalStorage from "use-local-storage";
-// import React, { useState } from "react";
-// import './App.css';
-// import { Toggle } from "./components/Toggle";
-// import { Login } from "./Login";
-// import { Register } from "./Register"
-// // 7700
-// function App() {
-//   const [isDark, setIsDark] = useLocalStorage("isDark", false);
-//   const [currentForm, setCurrentForm] = useState("login");
-//   const toggleForm = (formName) => {
-//     setCurrentForm(formName);
-//   }
-
-//   return (
-//     <div className="App" data-theme={isDark ? "dark" : "light"}>
-
-//       <Toggle
-//         isChecked={isDark}
-//         handleChange={() => setIsDark(!isDark)}
-//       />
-//       {
-//         currentForm === "login" ? <Login onFormSwitch={toggleForm} /> : <Register onFormSwitch={toggleForm} />
-//       }
-//     </div>
-//   );
-// }
-
-// export default App;

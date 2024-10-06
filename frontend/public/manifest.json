@@ -8,9 +8,9 @@
       "type": "image/x-icon"
     },
     {
-      "src": "logo192.png",
+      "src": "kiwilearn.png",
       "type": "image/png",
-      "sizes": "192x192"
+      "sizes": "360x360"
     },
     {
       "src": "logo512.png",

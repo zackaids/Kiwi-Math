@@ -6,13 +6,20 @@
 }
 
 :root {
-  --background-color: #f6f6f6;
+  --background-color: #D3DEAA;
   --foreground-color: #003cff;
   --primary-text-color: #0a0a0a;
   --secondary-text-color: #ffffff;
   --toggle-bg: #f0eb9d;
   --toggle-fg: #ffd000;
 }
+
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;700&display=swap');
+
+body, html { 
+  font-family: 'Josefin Sans', sans-serif;
+}
+
 
 [data-theme="dark"] {
   --background-color: #0a0a0a;

@@ -1,88 +1,17 @@
-// import React, { useState, useEffect } from "react";
-
-// export function QuestionPage() {
-//     const [questions, setQuestions] = useState([]);
-//     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-//     const [selectedOption, setSelectedOption] = useState("");
-
-//     useEffect(() => {
-//         const grade = localStorage.getItem("userGrade");
-//         console.log("Grade from localStorage:", grade);
-
-//         if (grade) {
-//             fetch(`http://localhost:5000/questions/${grade}`)
-//                 .then(response => {
-//                     if (!response.ok) {
-//                         throw new Error(`HTTP error! status: ${response.status}`);
-//                     }
-//                     return response.json();
-//                 })
-//                 .then(data => {
-//                     console.log("Fetched data:", data); // Debug statement
-//                     // Flatten the questions from all categories into a single array
-//                     const allQuestions = Object.values(data).flatMap(categoryArray => {
-//                         return categoryArray.flatMap(category => category.Questions);
-//                     });
-//                     console.log("All questions:", allQuestions); // Debug statement
-//                     setQuestions(allQuestions);
-//                 })
-//                 .catch(error => console.error("Error fetching questions:", error));
-//         } else {
-//             alert("Grade not found");
-//         }
-//     }, []);
-
-//     const handleSubmit = (e) => {
-//         e.preventDefault();
-//         if (currentQuestionIndex < questions.length - 1) {
-//             setCurrentQuestionIndex(currentQuestionIndex + 1);
-//             setSelectedOption("");
-//         } else {
-//             alert("You have completed all the questions!");
-//         }
-//     };
-
-//     if (questions.length === 0) {
-//         return <div>Loading...</div>;
-//     }
-
-//     const currentQuestion = questions[currentQuestionIndex];
-//     console.log("Current question:", currentQuestion); // Debug statement
-
-//     return (
-//         <div className="question-page">
-//             <h2>{currentQuestion.Question}</h2>
-//             <form onSubmit={handleSubmit}>
-//                 {currentQuestion.Options.map((option, index) => (
-//                     <div key={index}>
-//                         <input
-//                             type="radio"
-//                             id={`option-${index}`}
-//                             name="option"
-//                             value={option}
-//                             checked={selectedOption === option}
-//                             onChange={(e) => setSelectedOption(e.target.value)}
-//                         />
-//                         <label htmlFor={`option-${index}`}>{option}</label>
-//                     </div>
-//                 ))}
-//                 <button type="submit">Submit</button>
-//             </form>
-//         </div>
-//     );
-// }
-
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { DisclaimerPage } from "./DisclaimerPage";
 
 export function QuestionPage() {
     const [questions, setQuestions] = useState([]);
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const [selectedOption, setSelectedOption] = useState("");
     const [results, setResults] = useState([]); // To store the results of each question
+    const [showDisclaimer, setShowDisclaimer] = useState(true); // To show the disclaimer screen initially
+    const navigate = useNavigate();
 
     useEffect(() => {
         const grade = localStorage.getItem("userGrade");
-        console.log("Grade from localStorage:", grade);
 
         if (grade) {
             fetch(`http://localhost:5000/questions/${grade}`)
@@ -93,7 +22,6 @@ export function QuestionPage() {
                     return response.json();
                 })
                 .then(data => {
-                    console.log("Fetched data:", data); // Debug statement
                     // Flatten the questions from all categories into a single array
                     const allQuestions = Object.values(data).flatMap(categoryArray => {
                         return categoryArray.flatMap(category => category.Questions.map(question => ({
@@ -101,8 +29,7 @@ export function QuestionPage() {
                             category: category.Category // Add category to each question
                         })));
                     });
-                    console.log("All questions:", allQuestions); // Debug statement
-                    setQuestions(allQuestions);
+                    setQuestions(shuffleArray(allQuestions)); // Shuffle the questions before setting them
                 })
                 .catch(error => console.error("Error fetching questions:", error));
         } else {
@@ -110,28 +37,40 @@ export function QuestionPage() {
         }
     }, []);
 
+    // Function to shuffle an array
+    const shuffleArray = (array) => {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+    };
+
+    const handleStart = () => {
+        setShowDisclaimer(false);
+    };
+
     const handleSubmit = (e) => {
         e.preventDefault();
         const currentQuestion = questions[currentQuestionIndex];
         const isCorrect = selectedOption === currentQuestion.Answer;
-        setResults([...results, { question: currentQuestion.Question, selectedOption, isCorrect, category: currentQuestion.category }]);
+        const newResults = [...results, { question: currentQuestion.Question, selectedOption, isCorrect, category: currentQuestion.category }];
+        setResults(newResults);
         if (currentQuestionIndex < questions.length - 1) {
             setCurrentQuestionIndex(currentQuestionIndex + 1);
             setSelectedOption("");
         } else {
-            alert("You have completed all the questions!");
-            console.log("Results:", results); // Debug statement
             // Send results to backend
             fetch('http://localhost:5000/evaluate', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(results),
+                body: JSON.stringify(newResults),
             })
             .then(response => response.json())
             .then(data => {
-                console.log("Evaluation results:", data); // Debug statement
+                navigate('/results', { state: { results: newResults } }); // Navigate to results page with results
             })
             .catch(error => console.error("Error sending results:", error));
         }
@@ -142,28 +81,35 @@ export function QuestionPage() {
     }
 
     const currentQuestion = questions[currentQuestionIndex];
-    console.log("Current question:", currentQuestion); // Debug statement
+    const progress = ((currentQuestionIndex + 1) / questions.length) * 100;
 
     return (
         <div className="question-page">
-            <h1>{currentQuestion.category}</h1> {/* Display the category */}
-            <h2>{currentQuestion.Question}</h2>
-            <form onSubmit={handleSubmit}>
-                {currentQuestion.Options.map((option, index) => (
-                    <div key={index}>
-                        <input
-                            type="radio"
-                            id={`option-${index}`}
-                            name="option"
-                            value={option}
-                            checked={selectedOption === option}
-                            onChange={(e) => setSelectedOption(e.target.value)}
-                        />
-                        <label htmlFor={`option-${index}`}>{option}</label>
-                    </div>
-                ))}
-                <button type="submit">Submit</button>
-            </form>
+            {showDisclaimer ? (
+                <DisclaimerPage onStart={handleStart} totalQuestions={questions.length} />
+            ) : (
+                <>
+                    <h1>{currentQuestion.category}</h1> {/* Display the category */}
+                    <h2>{currentQuestion.Question}</h2>
+                    <progress value={progress} max="100"></progress> {/* Progress bar */}
+                    <form onSubmit={handleSubmit}>
+                        {currentQuestion.Options.map((option, index) => (
+                            <div key={index}>
+                                <input
+                                    type="radio"
+                                    id={`option-${index}`}
+                                    name="option"
+                                    value={option}
+                                    checked={selectedOption === option}
+                                    onChange={(e) => setSelectedOption(e.target.value)}
+                                />
+                                <label htmlFor={`option-${index}`}>{option}</label>
+                            </div>
+                        ))}
+                        <button type="submit" disabled={!selectedOption}>Submit</button>
+                    </form>
+                </>
+            )}
         </div>
     );
 }

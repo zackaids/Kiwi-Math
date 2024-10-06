@@ -1,0 +1,72 @@
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;700&display=swap');
+
+body, html { 
+  font-family: 'Josefin Sans', sans-serif;
+}
+
+.form-background {
+    background-color: #F9EEDF;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.auth-form-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.login-box, .register-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.login-form, .register-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+label {
+    text-align: left;
+    padding: 0.25rem 0;
+}
+
+input {
+    margin: 0.5rem 0;
+    padding: 1rem;
+    border: none;
+    border-radius: 10px;
+}
+
+.register-link, .login-link {
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.register-link:hover, .login-link:hover {
+    text-decoration: underline;
+}
+
+.login-button, .register-button {
+    border: none;
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+datalist {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    writing-mode: vertical-lr;
+    width: 130px;
+    margin-top:-10%;
+  }

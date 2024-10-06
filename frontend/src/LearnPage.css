@@ -1,0 +1,30 @@
+.learn-page {
+    padding: 20px;
+    text-align: center;
+}
+
+.categories {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.category {
+    margin: 20px;
+    cursor: pointer;
+    text-align: center;
+}
+
+.category-image {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.category-name {
+    margin-top: 10px;
+    font-size: 18px;
+    font-weight: bold;
+}

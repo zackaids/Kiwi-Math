@@ -9,12 +9,18 @@ export function Home() {
     navigate('/questions');
   };
 
+  const handleLearn = () => {
+    navigate('/learn');
+  };
+
   return (
     <div className="home-container">
-      <div className="home-button">LEARN</div>
-      <div className="home-button" onClick={handleRetakeTest}>RE-TAKE THE ASSESSMENT TEST</div>
-      <div className="home-button">PROFILE</div>
-      <div className="home-button">OPTIONS</div>
+      <div className="home-box">
+        <div className="home-button learn-button" onClick={handleLearn}>LEARN</div>
+        <div className="home-button test-button" onClick={handleRetakeTest}>ASSESSMENT TEST</div>
+        <div className="home-button profile-button">PROFILE</div>
+        <div className="home-button options-button">OPTIONS</div>
+      </div>
     </div>
   );
 }
